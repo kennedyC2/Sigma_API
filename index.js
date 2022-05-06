@@ -5,9 +5,19 @@ const http = require("http");
 const fs = require("fs");
 const stringDecoder = require("string_decoder").StringDecoder;
 const configuration = require("./config");
-const handlers = require("./lib/admin/main");
+const { signUp, Login, fetch, update, _delete } = require("./lib/admin/main");
 const helpers = require("./lib/helper");
-const company = require("./lib/company/main");
+const { create_company, fetch_company } = require("./lib/company/main");
+const { fetch_hourly } = require("./lib/hourly/main");
+const { fetch_lab_activity, fetch_admin_activity } = require("./lib/lab_activities/main");
+const { fetch_revenue } = require("./lib/revenue/main");
+const { fetch_services, update_services } = require("./lib/services/main");
+const { fetch_testKits, add_testKit } = require("./lib/testKit/main");
+const { fetch_tests, book_test, enter_test_results, complete_test_results } = require("./lib/tests/main");
+const { fetch_top_5 } = require("./lib/top_5/main");
+const { fetch_user_account, create_user_account } = require("./lib/users/main");
+const { fetch_stats } = require("./lib/stats/main");
+const { fetch_storage } = require("./lib/storage/main");
 
 // Server Options
 const serverOptions = {
@@ -96,10 +106,28 @@ HTTPSserver.listen(configuration.HTTPS_port, () => {
 
 // Define Routers
 const router = {
-    "": handlers.index,
-    "account/signUp": handlers.signUp,
-    "account/login": handlers.Login,
-    "account/update": handlers.update,
-    "account/deactivate": handlers.delete,
-    "company/create": company.create,
+    "account/signUp": signUp,
+    "account/login": Login,
+    "account/profile": fetch,
+    "account/update": update,
+    "account/deactivate": _delete,
+    "laboratory/create": create_company,
+    "laboratory/profile": fetch_company,
+    "laboratory/hourly": fetch_hourly,
+    "laboratory/lab_activities": fetch_lab_activity,
+    "laboratory/admin_activities": fetch_admin_activity,
+    "laboratory/revenue": fetch_revenue,
+    "laboratory/services": fetch_services,
+    "laboratory/stats": fetch_stats,
+    "laboratory/storage": fetch_storage,
+    "laboratory/testKits": fetch_testKits,
+    "laboratory/tests": fetch_tests,
+    "laboratory/top_5": fetch_top_5,
+    "laboratory/users": fetch_user_account,
+    "laboratory/update/services": update_services,
+    "laboratory/tests/booking": book_test,
+    "laboratory/tests/pending": enter_test_results,
+    "laboratory/tests/completed": complete_test_results,
+    "laboratory/testKits/add": add_testKit,
+    "laboratory/users/create": create_user_account,
 };
